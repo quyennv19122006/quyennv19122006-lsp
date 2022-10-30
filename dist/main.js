@@ -11685,7 +11685,10 @@ var launch = (socket) => {
   );
   const serverConnection = createServerProcess(
     "Lua",
-    (0, import_path.resolve)(process.cwd(), "lua-language-server/.bin/Windows/lua-language-server.exe")
+    (0, import_path.resolve)(
+      process.cwd(),
+      "lua-language-server/.bin/Windows/lua-language-server.exe"
+    )
   );
   forward(socketConnection, serverConnection, (message) => {
     if (lib_exports.Message.isRequest(message) && isInitializeRequest(message)) {
