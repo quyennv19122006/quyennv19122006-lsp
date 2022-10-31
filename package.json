@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon -r esbuild-register src/main.ts",
-    "build": "esbuild src/main.ts --bundle --platform=node --outdir=dist",
-    "start": "node dist/main.js"
+    "build": "esbuild src/main.ts --bundle --platform=node --outdir=build",
+    "start": "node build/main.js"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
