@@ -1,28 +1,23 @@
-import { WebSocketServer } from 'ws';
-import * as rpc from 'vscode-ws-jsonrpc';
+import { WebSocketServer, ServerOptions } from 'ws';
 import { launch } from './launch';
 import { port } from './configs';
+import { start } from './start';
 
-const wss = new WebSocketServer({ port });
+interface Server {
+  wss: WebSocketServer;
+  port: ServerOptions['port'];
+  start: Function;
+  launch: Function;
+}
 
-console.log(`Language server is running on ws://localhost:${port}`);
-
-wss.on('connection', (webSocket) => {
-  console.log('Connected to client!');
-
-  const socket: rpc.IWebSocket = {
-    send: (content) =>
-      webSocket.send(content, (error) => {
-        if (error) throw error;
-      }),
-    onMessage: (callback) => webSocket.on('message', callback),
-    onError: (callback) => webSocket.on('error', callback),
-    onClose: (callback) => webSocket.on('close', callback),
-    dispose: () => webSocket.close()
-  };
-  if (webSocket.readyState === webSocket.OPEN) {
-    launch(socket);
-  } else {
-    webSocket.on('open', () => launch(socket));
+class Server {
+  constructor(port: number) {
+    this.port = port;
+    this.wss = new WebSocketServer({ port });
+    this.start = start;
+    this.launch = launch;
+    start(this.wss, this.launch, this.port);
   }
-});
+}
+
+const server = new Server(port);

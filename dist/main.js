@@ -1619,7 +1619,7 @@ var require_extension = __commonJS({
       let inQuotes = false;
       let extensionName;
       let paramName;
-      let start = -1;
+      let start2 = -1;
       let code = -1;
       let end = -1;
       let i = 0;
@@ -1627,51 +1627,51 @@ var require_extension = __commonJS({
         code = header.charCodeAt(i);
         if (extensionName === void 0) {
           if (end === -1 && tokenChars[code] === 1) {
-            if (start === -1)
-              start = i;
+            if (start2 === -1)
+              start2 = i;
           } else if (i !== 0 && (code === 32 || code === 9)) {
-            if (end === -1 && start !== -1)
+            if (end === -1 && start2 !== -1)
               end = i;
           } else if (code === 59 || code === 44) {
-            if (start === -1) {
+            if (start2 === -1) {
               throw new SyntaxError(`Unexpected character at index ${i}`);
             }
             if (end === -1)
               end = i;
-            const name = header.slice(start, end);
+            const name = header.slice(start2, end);
             if (code === 44) {
               push(offers, name, params);
               params = /* @__PURE__ */ Object.create(null);
             } else {
               extensionName = name;
             }
-            start = end = -1;
+            start2 = end = -1;
           } else {
             throw new SyntaxError(`Unexpected character at index ${i}`);
           }
         } else if (paramName === void 0) {
           if (end === -1 && tokenChars[code] === 1) {
-            if (start === -1)
-              start = i;
+            if (start2 === -1)
+              start2 = i;
           } else if (code === 32 || code === 9) {
-            if (end === -1 && start !== -1)
+            if (end === -1 && start2 !== -1)
               end = i;
           } else if (code === 59 || code === 44) {
-            if (start === -1) {
+            if (start2 === -1) {
               throw new SyntaxError(`Unexpected character at index ${i}`);
             }
             if (end === -1)
               end = i;
-            push(params, header.slice(start, end), true);
+            push(params, header.slice(start2, end), true);
             if (code === 44) {
               push(offers, extensionName, params);
               params = /* @__PURE__ */ Object.create(null);
               extensionName = void 0;
             }
-            start = end = -1;
-          } else if (code === 61 && start !== -1 && end === -1) {
-            paramName = header.slice(start, i);
-            start = end = -1;
+            start2 = end = -1;
+          } else if (code === 61 && start2 !== -1 && end === -1) {
+            paramName = header.slice(start2, i);
+            start2 = end = -1;
           } else {
             throw new SyntaxError(`Unexpected character at index ${i}`);
           }
@@ -1680,16 +1680,16 @@ var require_extension = __commonJS({
             if (tokenChars[code] !== 1) {
               throw new SyntaxError(`Unexpected character at index ${i}`);
             }
-            if (start === -1)
-              start = i;
+            if (start2 === -1)
+              start2 = i;
             else if (!mustUnescape)
               mustUnescape = true;
             isEscaping = false;
           } else if (inQuotes) {
             if (tokenChars[code] === 1) {
-              if (start === -1)
-                start = i;
-            } else if (code === 34 && start !== -1) {
+              if (start2 === -1)
+                start2 = i;
+            } else if (code === 34 && start2 !== -1) {
               inQuotes = false;
               end = i;
             } else if (code === 92) {
@@ -1700,18 +1700,18 @@ var require_extension = __commonJS({
           } else if (code === 34 && header.charCodeAt(i - 1) === 61) {
             inQuotes = true;
           } else if (end === -1 && tokenChars[code] === 1) {
-            if (start === -1)
-              start = i;
-          } else if (start !== -1 && (code === 32 || code === 9)) {
+            if (start2 === -1)
+              start2 = i;
+          } else if (start2 !== -1 && (code === 32 || code === 9)) {
             if (end === -1)
               end = i;
           } else if (code === 59 || code === 44) {
-            if (start === -1) {
+            if (start2 === -1) {
               throw new SyntaxError(`Unexpected character at index ${i}`);
             }
             if (end === -1)
               end = i;
-            let value = header.slice(start, end);
+            let value = header.slice(start2, end);
             if (mustUnescape) {
               value = value.replace(/\\/g, "");
               mustUnescape = false;
@@ -1723,18 +1723,18 @@ var require_extension = __commonJS({
               extensionName = void 0;
             }
             paramName = void 0;
-            start = end = -1;
+            start2 = end = -1;
           } else {
             throw new SyntaxError(`Unexpected character at index ${i}`);
           }
         }
       }
-      if (start === -1 || inQuotes || code === 32 || code === 9) {
+      if (start2 === -1 || inQuotes || code === 32 || code === 9) {
         throw new SyntaxError("Unexpected end of input");
       }
       if (end === -1)
         end = i;
-      const token = header.slice(start, end);
+      const token = header.slice(start2, end);
       if (extensionName === void 0) {
         push(offers, token, params);
       } else {
@@ -2510,37 +2510,37 @@ var require_subprotocol = __commonJS({
     var { tokenChars } = require_validation();
     function parse(header) {
       const protocols = /* @__PURE__ */ new Set();
-      let start = -1;
+      let start2 = -1;
       let end = -1;
       let i = 0;
       for (i; i < header.length; i++) {
         const code = header.charCodeAt(i);
         if (end === -1 && tokenChars[code] === 1) {
-          if (start === -1)
-            start = i;
+          if (start2 === -1)
+            start2 = i;
         } else if (i !== 0 && (code === 32 || code === 9)) {
-          if (end === -1 && start !== -1)
+          if (end === -1 && start2 !== -1)
             end = i;
         } else if (code === 44) {
-          if (start === -1) {
+          if (start2 === -1) {
             throw new SyntaxError(`Unexpected character at index ${i}`);
           }
           if (end === -1)
             end = i;
-          const protocol2 = header.slice(start, end);
+          const protocol2 = header.slice(start2, end);
           if (protocols.has(protocol2)) {
             throw new SyntaxError(`The "${protocol2}" subprotocol is duplicated`);
           }
           protocols.add(protocol2);
-          start = end = -1;
+          start2 = end = -1;
         } else {
           throw new SyntaxError(`Unexpected character at index ${i}`);
         }
       }
-      if (start === -1 || end !== -1) {
+      if (start2 === -1 || end !== -1) {
         throw new SyntaxError("Unexpected end of input");
       }
-      const protocol = header.slice(start, i);
+      const protocol = header.slice(start2, i);
       if (protocols.has(protocol)) {
         throw new SyntaxError(`The "${protocol}" subprotocol is duplicated`);
       }
@@ -2669,10 +2669,10 @@ var require_websocket_server = __commonJS({
             process.nextTick(emitClose, this);
           }
         } else {
-          const server = this._server;
+          const server2 = this._server;
           this._removeListeners();
           this._removeListeners = this._server = null;
-          server.close(() => {
+          server2.close(() => {
             emitClose(this);
           });
         }
@@ -2826,18 +2826,18 @@ var require_websocket_server = __commonJS({
       }
     };
     module2.exports = WebSocketServer2;
-    function addListeners(server, map) {
+    function addListeners(server2, map) {
       for (const event of Object.keys(map))
-        server.on(event, map[event]);
+        server2.on(event, map[event]);
       return function removeListeners() {
         for (const event of Object.keys(map)) {
-          server.removeListener(event, map[event]);
+          server2.removeListener(event, map[event]);
         }
       };
     }
-    function emitClose(server) {
-      server._state = CLOSED;
-      server.emit("close");
+    function emitClose(server2) {
+      server2._state = CLOSED;
+      server2.emit("close");
     }
     function socketOnError() {
       this.destroy();
@@ -2856,11 +2856,11 @@ var require_websocket_server = __commonJS({
 ` + Object.keys(headers).map((h) => `${h}: ${headers[h]}`).join("\r\n") + "\r\n\r\n" + message
       );
     }
-    function abortHandshakeOrEmitwsClientError(server, req, socket, code, message) {
-      if (server.listenerCount("wsClientError")) {
+    function abortHandshakeOrEmitwsClientError(server2, req, socket, code, message) {
+      if (server2.listenerCount("wsClientError")) {
         const err = new Error(message);
         Error.captureStackTrace(err, abortHandshakeOrEmitwsClientError);
-        server.emit("wsClientError", err, socket, req);
+        server2.emit("wsClientError", err, socket, req);
       } else {
         abortHandshake(socket, code, message);
       }
@@ -5863,16 +5863,16 @@ var require_main = __commonJS({
         connectResolve = resolve2;
       });
       return new Promise((resolve2, reject) => {
-        let server = (0, net_1.createServer)((socket) => {
-          server.close();
+        let server2 = (0, net_1.createServer)((socket) => {
+          server2.close();
           connectResolve([
             new SocketMessageReader2(socket, encoding),
             new SocketMessageWriter2(socket, encoding)
           ]);
         });
-        server.on("error", reject);
-        server.listen(pipeName, () => {
-          server.removeListener("error", reject);
+        server2.on("error", reject);
+        server2.listen(pipeName, () => {
+          server2.removeListener("error", reject);
           resolve2({
             onConnected: () => {
               return connected;
@@ -5896,16 +5896,16 @@ var require_main = __commonJS({
         connectResolve = resolve2;
       });
       return new Promise((resolve2, reject) => {
-        const server = (0, net_1.createServer)((socket) => {
-          server.close();
+        const server2 = (0, net_1.createServer)((socket) => {
+          server2.close();
           connectResolve([
             new SocketMessageReader2(socket, encoding),
             new SocketMessageWriter2(socket, encoding)
           ]);
         });
-        server.on("error", reject);
-        server.listen(port2, "127.0.0.1", () => {
-          server.removeListener("error", reject);
+        server2.on("error", reject);
+        server2.listen(port2, "127.0.0.1", () => {
+          server2.removeListener("error", reject);
           resolve2({
             onConnected: () => {
               return connected;
@@ -7337,9 +7337,9 @@ var require_main2 = __commonJS({
         });
         FullTextDocument2.prototype.getText = function(range) {
           if (range) {
-            var start = this.offsetAt(range.start);
+            var start2 = this.offsetAt(range.start);
             var end = this.offsetAt(range.end);
-            return this._content.substring(start, end);
+            return this._content.substring(start2, end);
           }
           return this._content;
         };
@@ -8189,8 +8189,8 @@ var require_protocol_notebook = __commonJS({
         return Is.objectLiteral(candidate) && vscode_languageserver_types_1.uinteger.is(candidate.start) && vscode_languageserver_types_1.uinteger.is(candidate.deleteCount) && (candidate.cells === void 0 || Is.typedArray(candidate.cells, NotebookCell.is));
       }
       NotebookCellArrayChange2.is = is;
-      function create(start, deleteCount, cells) {
-        const result = { start, deleteCount };
+      function create(start2, deleteCount, cells) {
+        const result = { start: start2, deleteCount };
         if (cells !== void 0) {
           result.cells = cells;
         }
@@ -11703,24 +11703,37 @@ var import_dotenv = __toESM(require_main5());
 import_dotenv.default.config();
 var port = process.env.PORT;
 
+// src/start.ts
+var start = (wss, launch2, port2) => {
+  console.log(`Language server is listening on port ${port2}`);
+  wss.on("connection", (webSocket) => {
+    console.log("Connected to client!");
+    const socket = {
+      send: (content) => webSocket.send(content, (error) => {
+        if (error)
+          throw error;
+      }),
+      onMessage: (callback) => webSocket.on("message", callback),
+      onError: (callback) => webSocket.on("error", callback),
+      onClose: (callback) => webSocket.on("close", callback),
+      dispose: () => webSocket.close()
+    };
+    if (webSocket.readyState === webSocket.OPEN) {
+      launch2(socket);
+    } else {
+      webSocket.on("open", () => launch2(socket));
+    }
+  });
+};
+
 // src/main.ts
-var wss = new import_websocket_server.default({ port });
-console.log(`Language server is running on ws://localhost:${port}`);
-wss.on("connection", (webSocket) => {
-  console.log("Connected to client!");
-  const socket = {
-    send: (content) => webSocket.send(content, (error) => {
-      if (error)
-        throw error;
-    }),
-    onMessage: (callback) => webSocket.on("message", callback),
-    onError: (callback) => webSocket.on("error", callback),
-    onClose: (callback) => webSocket.on("close", callback),
-    dispose: () => webSocket.close()
-  };
-  if (webSocket.readyState === webSocket.OPEN) {
-    launch(socket);
-  } else {
-    webSocket.on("open", () => launch(socket));
+var Server = class {
+  constructor(port2) {
+    this.port = port2;
+    this.wss = new import_websocket_server.default({ port: port2 });
+    this.start = start;
+    this.launch = launch;
+    start(this.wss, this.launch, this.port);
   }
-});
+};
+var server = new Server(port);
